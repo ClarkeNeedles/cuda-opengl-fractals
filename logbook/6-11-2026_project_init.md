@@ -37,6 +37,3 @@ Setting up a brand new standalone project repository to build a high-performance
 - Duplicate or template the kernel to support `double` precision math blocks.
 - Write the application logic to hot-swap between the fast `float` path and the deeper `double` path depending on the zoom depth.
 - Account for warp divergence in project notes, identifying performance cliffs at the boundaries of the Mandelbrot set.
-
-- **Make sure that you run (pip install -r requirements.txt) for the AI script to work.**
-- The AI script (/scripts/generate_readme.py) will read through this unstructured section and automatically figure out your project's features and updates for the README.md.
