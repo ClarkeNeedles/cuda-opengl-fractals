@@ -1,7 +1,7 @@
 ---
 title: "Mandelbrot Function Research"
 date: 6-17-2026
-status: in-progress
+status: planning
 version: 0.0.0
 ---
 

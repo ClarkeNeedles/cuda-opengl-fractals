@@ -1,7 +1,7 @@
 ---
 title: "Project Plan: Standalone CUDA-OpenGL Mandelbrot Benchmark Suite"
 date: 06-11-2026
-status: in-progress
+status: planning
 version: 0.0.0
 ---
 
