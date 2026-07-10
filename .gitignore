@@ -1,0 +1,50 @@
+# ====================================================================
+# Visual Studio Build Artifacts & Temporary Files
+# ====================================================================
+# Compiled binaries, object files, and debug structures
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.lksh
+*.exp
+*.lib
+
+# Output build directories
+[Xx]64/
+[Xx]86/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio 2022/2026 local cache database (Massive folders)
+.vs/
+*.opendb
+*.db
+
+# ====================================================================
+# User-Specific Configurations (Do not share on GitHub)
+# ====================================================================
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ====================================================================
+# CMake Artifacts (If you transition to CMake later)
+# ====================================================================
+CMakeCache.txt
+CMakeFiles/
+CMakeSettings.json
+CMakePresets.json
+build/
+
+# ====================================================================
+# Dependencies & Package Managers (Optional)
+# ====================================================================
+# Ignore if you install OpenGL libraries locally via vcpkg
+vcpkg_installed/
+
+# ====================================================================
+# Other
+# ====================================================================
+.env
