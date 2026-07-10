@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\cwnee\\github\\cuda-opengl-fractals\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{297E10ED-C654-129B-F945-BC56C4EAF739}|src\\cuda-opengl-fractals.vcxproj|C:\\Users\\cwnee\\github\\cuda-opengl-fractals\\src\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{297E10ED-C654-129B-F945-BC56C4EAF739}|src\\cuda-opengl-fractals.vcxproj|solutionrelative:src\\kernel.cu||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "kernel.cu",
+              "DocumentMoniker": "C:\\Users\\cwnee\\github\\cuda-opengl-fractals\\src\\kernel.cu",
+              "RelativeDocumentMoniker": "src\\kernel.cu",
+              "ToolTip": "C:\\Users\\cwnee\\github\\cuda-opengl-fractals\\src\\kernel.cu",
+              "RelativeToolTip": "src\\kernel.cu",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-07-09T20:38:58.246Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
