@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="opengl\opengl_context.cpp" />
+    <ClCompile Include="opengl\shader.cpp" />
+    <ClCompile Include="app.cpp" />
+    <ClCompile Include="renderer\mandelbrot.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="CUDA\kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CUDA\kernel.cuh" />
+    <ClInclude Include="opengl\opengl_context.h" />
+    <ClInclude Include="opengl\shader.h" />
+    <ClInclude Include="app.h" />
+    <ClInclude Include="renderer\mandelbrot.h" />
+  </ItemGroup>
+</Project>
