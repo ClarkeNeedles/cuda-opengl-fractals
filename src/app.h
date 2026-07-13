@@ -13,32 +13,17 @@
 class App
 {
 public:
-
-    /**
-     * @brief Creates the application.
-     */
     App();
 
-
-    /**
-     * @brief Cleans up application resources.
-     */
     ~App();
 
-
-    /**
-     * @brief Starts the main application loop.
-     */
     void run();
 
-
 private:
-
     /**
      * @brief Handles keyboard and mouse input.
      */
     void processInput();
-
 
     /**
      * @brief GLFW mouse button callback.
@@ -50,7 +35,6 @@ private:
         int mods
     );
 
-
     /**
      * @brief GLFW mouse movement callback.
      */
@@ -59,7 +43,6 @@ private:
         double xpos,
         double ypos
     );
-
 
     /**
      * @brief GLFW scroll callback.
@@ -70,25 +53,14 @@ private:
         double yoffset
     );
 
-
-
 private:
-
     static App* s_instance;
 
-
     OpenGLContext m_window;
-
     MandelbrotRenderer m_renderer;
 
-
-
     // Mouse state
-
     bool m_dragging = false;
-
-
     double m_lastMouseX = 0.0;
-
     double m_lastMouseY = 0.0;
 };

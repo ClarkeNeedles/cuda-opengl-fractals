@@ -9,11 +9,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
 class OpenGLContext
 {
 public:
-
     /**
      * @brief Creates an OpenGL window and initializes the context.
      *
@@ -27,30 +25,25 @@ public:
         const char* title
     );
 
-
     /**
      * @brief Cleans up the GLFW window and terminates GLFW.
      */
     ~OpenGLContext();
-
 
     /**
      * @brief Checks if the user has closed the window.
      */
     bool shouldClose() const;
 
-
     /**
      * @brief Swaps the front/back buffers.
      */
     void swapBuffers();
 
-
     /**
      * @brief Processes pending GLFW events.
      */
     void pollEvents();
-
 
     /**
      * @brief Returns the GLFW window handle.
@@ -59,25 +52,19 @@ public:
      */
     GLFWwindow* getWindow() const;
 
-
     /**
      * @brief Returns window width.
      */
     int getWidth() const;
-
 
     /**
      * @brief Returns window height.
      */
     int getHeight() const;
 
-
-
 private:
-
     GLFWwindow* m_window = nullptr;
 
     int m_width;
-
     int m_height;
 };
