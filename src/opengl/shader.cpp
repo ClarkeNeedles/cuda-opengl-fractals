@@ -1,5 +1,5 @@
 /******************************************************************************
- * @file    Shader.cpp
+ * @file    shader.cpp
  * @author  Clarke Needles
  * @brief   OpenGL shader compilation and management.
  ******************************************************************************/

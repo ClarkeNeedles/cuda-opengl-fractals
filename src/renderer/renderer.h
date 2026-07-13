@@ -1,7 +1,7 @@
 /******************************************************************************
- * @file    mandelbrot.h
+ * @file    renderer.h
  * @author  Clarke Needles
- * @brief   Header file for CUDA/OpenGL Mandelbrot rendering.
+ * @brief   Header file for CUDA/OpenGL fractal rendering.
  ******************************************************************************/
 
 #pragma once
@@ -11,29 +11,16 @@
 #include <cuda_gl_interop.h>
 #include "../OpenGL/Shader.h"
 
-class MandelbrotRenderer
+class Renderer
 {
 public:
-    /**
-     * @brief Creates the Mandelbrot renderer.
-     *
-     * @param width  Rendering width.
-     * @param height Rendering height.
-     */
-    MandelbrotRenderer(
+    Renderer(
+        int max_iters,
         int width,
         int height
     );
 
-    /**
-     * @brief Releases CUDA and OpenGL resources.
-     */
-    ~MandelbrotRenderer();
-
-    /**
-     * @brief Initializes OpenGL/CUDA resources.
-     */
-    void initialize();
+    ~Renderer();
 
     /**
      * @brief Generates and displays one Mandelbrot frame.
@@ -88,7 +75,7 @@ private:
     float m_zoom = 1.0f;
     float m_moveX = -0.5f;
     float m_moveY = 0.0f;
-    int m_maxIterations = 1000;
+    int m_maxIters;
 
     // Timing
     float m_renderTime = 0.0f;

@@ -1,5 +1,5 @@
 /******************************************************************************
- * @file    OpenGLContext.cpp
+ * @file    opengl_context.cpp
  * @author  Clarke Needles
  * @brief   OpenGL context creation and GLFW management implementation.
  ******************************************************************************/
@@ -8,11 +8,8 @@
 
 #include <iostream>
 
-OpenGLContext::OpenGLContext(
-    int width,
-    int height,
-    const char* title
-) : m_width(width), m_height(height)
+OpenGLContext::OpenGLContext(int width, int height, const char* title) : 
+    m_width(width), m_height(height)
 {
     // Initialize GLFW
     if (!glfwInit())

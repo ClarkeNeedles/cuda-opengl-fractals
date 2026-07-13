@@ -4,10 +4,11 @@
  * @brief   CUDA implementation of the Mandelbrot fractal renderer.
  ******************************************************************************/
 
+#include "kernel.cuh"
+
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <math.h>
-#include "kernel.cuh"
 
 /**
  * @brief Device function to compute smooth RGB color from a normalized value.
@@ -36,7 +37,8 @@ __device__ uchar4 get_palette_color(float t)
 /**
  * @brief Mandelbrot CUDA Kernel for parallel pixel evaluation.
  */
-__global__ void mandelbrot_kernel(uchar4* buffer, int width, int height, float zoom, float moveX, float moveY) 
+__global__ void mandelbrot_kernel(uchar4* buffer, int width, int height, 
+    float zoom, float move_x, float move_y, int max_iters) 
 {
     // Map current thread to unique global pixel coordinates
     int x = blockIdx.x * blockDim.x + threadIdx.x;
@@ -47,8 +49,8 @@ __global__ void mandelbrot_kernel(uchar4* buffer, int width, int height, float z
         return;
 
     // Map screen pixel space to complex plane coordinates (C = cr + i*ci)
-    float cr = 1.5f * (x - width / 2.0f) / (0.5f * zoom * width) + moveX;
-    float ci = (y - height / 2.0f) / (0.5f * zoom * height) + moveY;
+    float cr = 1.5f * (x - width / 2.0f) / (0.5f * zoom * width) + move_x;
+    float ci = (y - height / 2.0f) / (0.5f * zoom * height) + move_y;
 
     // Initialize Z_0 = 0
     float zr = 0.0f;
@@ -59,7 +61,7 @@ __global__ void mandelbrot_kernel(uchar4* buffer, int width, int height, float z
     float zi2 = 0.0f;
 
     // Main Escape Time Loop
-    while (zr2 + zi2 <= 4.0f && iter < MAX_ITERS) 
+    while (zr2 + zi2 <= 4.0f && iter < max_iters) 
     {
         zi = 2.0f * zr * zi + ci;
         zr = zr2 - zi2 + cr;
@@ -71,12 +73,12 @@ __global__ void mandelbrot_kernel(uchar4* buffer, int width, int height, float z
 
     // Map raw iteration count to a continuous smooth color spectrum
     float t = 1.0f;
-    if (iter < MAX_ITERS) 
+    if (iter < max_iters) 
     {
         // Logarithmic smoothing formula to entirely eradicate color banding
         float log_zn = logf(zr2 + zi2) / 2.0f;
         float nu = logf(log_zn / logf(2.0f)) / logf(2.0f);
-        t = ((float)iter + 1.0f - nu) / (float)MAX_ITERS;
+        t = ((float)iter + 1.0f - nu) / (float)max_iters;
     }
 
     // Write final RGBA value straight to the shared OpenGL PBO pointer allocation
@@ -87,13 +89,16 @@ __global__ void mandelbrot_kernel(uchar4* buffer, int width, int height, float z
 /**
  * @brief Host wrapper to configure execution parameters and launch the kernel.
  */
-void launch_mandelbrot_kernel(uchar4* d_buffer, int width, int height, float zoom, float moveX, float moveY) 
+void launch_mandelbrot_kernel(uchar4* d_buffer, int width, int height, 
+    float zoom, float move_x, float move_y, int max_iters) 
 {
     // 16x16 pixel blocks are highly optimized for modern GPU architectures
     dim3 blockSize(16, 16);
-    dim3 gridSize((width + blockSize.x - 1) / blockSize.x, (height + blockSize.y - 1) / blockSize.y);
+    dim3 gridSize((width + blockSize.x - 1) / blockSize.x, 
+        (height + blockSize.y - 1) / blockSize.y);
 
-    mandelbrot_kernel << <gridSize, blockSize >> > (d_buffer, width, height, zoom, moveX, moveY);
+    mandelbrot_kernel << <gridSize, blockSize >> > (
+        d_buffer, width, height, zoom, move_x, move_y, max_iters);
 
     // Explicit synchronization to ensure execution completes before OpenGL redraws
     cudaDeviceSynchronize();

@@ -1,26 +1,30 @@
 /******************************************************************************
- * @file    MandelbrotRenderer.cpp
+ * @file    renderer.cpp
  * @author  Clarke Needles
- * @brief   CUDA/OpenGL Mandelbrot rendering implementation.
+ * @brief   CUDA/OpenGL fractal rendering implementation.
  ******************************************************************************/
 
-#include "mandelbrot.h"
+#include "renderer.h"
 
 #include "../CUDA/kernel.cuh"
 #include <chrono>
 #include <iostream>
 
-
-MandelbrotRenderer::MandelbrotRenderer(int width, int height) :
-    m_width(width), m_height(height),
+Renderer::Renderer(int max_iters, int width, int height) :
+    m_maxIters(max_iters), m_width(width), m_height(height),
     m_shader(
         "OpenGL/shaders/fullscreen.vert",
         "OpenGL/shaders/fullscreen.frag"
     )
 {
+    createPBO();
+
+    createTexture();
+
+    createFullscreenQuad();
 }
 
-MandelbrotRenderer::~MandelbrotRenderer()
+Renderer::~Renderer()
 {
     if (m_cudaResource)
     {
@@ -48,16 +52,7 @@ MandelbrotRenderer::~MandelbrotRenderer()
     }
 }
 
-void MandelbrotRenderer::initialize()
-{
-    createPBO();
-
-    createTexture();
-
-    createFullscreenQuad();
-}
-
-void MandelbrotRenderer::createPBO()
+void Renderer::createPBO()
 {
     glGenBuffers(1, &m_pbo);
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo);
@@ -78,39 +73,23 @@ void MandelbrotRenderer::createPBO()
     );
 }
 
-void MandelbrotRenderer::createTexture()
+void Renderer::createTexture()
 {
     glGenTextures(1, &m_texture);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
     glTexImage2D(
-        GL_TEXTURE_2D,
-        0,
-        GL_RGBA8,
-        m_width,
-        m_height,
-        0,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        nullptr
+        GL_TEXTURE_2D, 0, GL_RGBA8,
+        m_width, m_height, 0, GL_RGBA, 
+        GL_UNSIGNED_BYTE, nullptr
     );
 
-    glTexParameteri(
-        GL_TEXTURE_2D,
-        GL_TEXTURE_MIN_FILTER,
-        GL_LINEAR
-    );
-
-    glTexParameteri(
-        GL_TEXTURE_2D,
-        GL_TEXTURE_MAG_FILTER,
-        GL_LINEAR
-    );
-
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void MandelbrotRenderer::createFullscreenQuad()
+void Renderer::createFullscreenQuad()
 {
     float vertices[] =
     {
@@ -138,30 +117,22 @@ void MandelbrotRenderer::createFullscreenQuad()
     );
 
     glVertexAttribPointer(
-        0,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        4 * sizeof(float),
-        (void*)0
+        0, 2, GL_FLOAT, GL_FALSE, 
+        4 * sizeof(float), (void*)0
     );
 
     glEnableVertexAttribArray(0);
 
     glVertexAttribPointer(
-        1,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        4 * sizeof(float),
-        (void*)(2 * sizeof(float))
+        1, 2, GL_FLOAT, GL_FALSE,
+        4 * sizeof(float), (void*)(2 * sizeof(float))
     );
 
     glEnableVertexAttribArray(1);
     glBindVertexArray(0);
 }
 
-void MandelbrotRenderer::render()
+void Renderer::render()
 {
     uchar4* d_output;
     size_t size;
@@ -182,7 +153,7 @@ void MandelbrotRenderer::render()
         m_zoom,
         m_moveX,
         m_moveY,
-        m_maxIterations
+        m_maxIters
     );
 
     cudaGraphicsUnmapResources(1, &m_cudaResource, 0);
@@ -195,27 +166,20 @@ void MandelbrotRenderer::render()
         end - start).count();
 }
 
-void MandelbrotRenderer::updateTexture()
+void Renderer::updateTexture()
 {
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_pbo);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
-    glTexSubImage2D(
-        GL_TEXTURE_2D,
-        0,
-        0,
-        0,
-        m_width,
-        m_height,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        nullptr
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0,
+        0, m_width, m_height,
+        GL_RGBA, GL_UNSIGNED_BYTE, nullptr
     );
 
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 }
 
-void MandelbrotRenderer::draw()
+void Renderer::draw()
 {
     m_shader.use();
 
@@ -229,23 +193,23 @@ void MandelbrotRenderer::draw()
     glBindVertexArray(0);
 }
 
-void MandelbrotRenderer::zoomIn()
+void Renderer::zoomIn()
 {
     m_zoom *= 1.15f;
 }
 
-void MandelbrotRenderer::zoomOut()
+void Renderer::zoomOut()
 {
     m_zoom /= 1.15f;
 }
 
-void MandelbrotRenderer::move(float dx, float dy)
+void Renderer::move(float dx, float dy)
 {
     m_moveX += dx / m_zoom;
     m_moveY += dy / m_zoom;
 }
 
-float MandelbrotRenderer::getRenderTime() const
+float Renderer::getRenderTime() const
 {
     return m_renderTime;
 }

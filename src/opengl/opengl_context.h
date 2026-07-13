@@ -1,5 +1,5 @@
 /******************************************************************************
- * @file    OpenGLContext.h
+ * @file    opengl_context.h
  * @author  Clarke Needles
  * @brief   Header for creation and management of the OpenGL rendering context.
  ******************************************************************************/

@@ -7,13 +7,15 @@
 #pragma once
 
 #include "opengl/opengl_context.h"
-#include "renderer/mandelbrot.h"
-
+#include "renderer/renderer.h"
 
 class App
 {
 public:
-    App();
+    App(int max_iters, 
+        int width, 
+        int height
+    );
 
     ~App();
 
@@ -57,7 +59,7 @@ private:
     static App* s_instance;
 
     OpenGLContext m_window;
-    MandelbrotRenderer m_renderer;
+    Renderer m_renderer;
 
     // Mouse state
     bool m_dragging = false;

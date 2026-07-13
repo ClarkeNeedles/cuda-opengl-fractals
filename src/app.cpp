@@ -4,21 +4,18 @@
  * @brief   Application control loop implementation.
  ******************************************************************************/
 
-#include "App.h"
+#include "app.h"
 
 #include <GL/glew.h>
 #include <iostream>
 
 App* App::s_instance = nullptr;
 
-App::App() :
-    m_window(900, 600, "CUDA OpenGL Mandelbrot Explorer"),
-    m_renderer(900, 600)
+App::App(int max_iters, int width, int height) :
+    m_window(width, height, "CUDA OpenGL Mandelbrot Explorer"),
+    m_renderer(max_iters, width, height)
 {
     s_instance = this;
-
-    // Renderer must initialize AFTER OpenGL context exists.
-    m_renderer.initialize();
 
     GLFWwindow* window = m_window.getWindow();
    
